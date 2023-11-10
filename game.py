@@ -42,7 +42,7 @@ class Game:
             if self.grid[yIndex][xIndex] != 0:
                 currGroupColor = self.grid[yIndex][xIndex]
                 currGroup = self.findAdjacentGroup(currGroupColor, yIndex, xIndex)
-                if len(currGroup >= self.MAX_GROUP_SIZE):
+                if len(currGroup) >= self.MAX_GROUP_SIZE:
                     for ele in currGroup:
                         self.grid[ele[0]][ele[1]] = 0
             if xIndex + 1 == self.maxX:
@@ -53,21 +53,36 @@ class Game:
   
     # The actual BFS that is called as a helper to popLargePuyoGroups
     def findAdjacentGroup(self, currGroupColor, yIndex, xIndex):
-        currGroup = [[yIndex, xIndex]]
-        queue = {[yIndex, xIndex]}
-        visited = {[yIndex, xIndex]}
+        currGroup = []
+        queue = [[yIndex, xIndex]]
+        visited = {}
         while queue:
             nextIndex = queue.pop()
             yIndex = nextIndex[0]
             xIndex = nextIndex[1]
-            if yIndex > 0:
-                queue.append([yIndex-1,xIndex])
-            if yIndex < self.maxY:
-                queue.append(
+            if self.grid[yIndex, xIndex] != currGroupColor or (yIndex, xIndex) in visited:
+                visited[(yIndex, xIndex)] = 1
+                continue
+            else:
+                currGroup.append([yIndex,xIndex])
 
+            if yIndex > 0 and (yIndex-1,xIndex) not in visited:
+                queue.append([yIndex-1,xIndex])
+            if yIndex < self.maxY - 1 and (yIndex+1,xIndex) not in visited:
+                queue.append([yIndex+1,xIndex])
+            if xIndex > 0 and (yIndex,xIndex-1) not in visited:
+                queue.append([yIndex, xIndex-1])
+            if xIndex < self.maxX - 1 and (yIndex,xIndex+1) not in visited:
+                queue.append([yIndex, xIndex+1])
+
+            visited[(yIndex,xIndex)] = 1
+        return currGroup
 
 
 X = Game()
 X.dropHorizontalPuyo(2,3,4)
 X.dropHorizontalPuyo(1,1,1)
+X.dropHorizontalPuyo(1,1,1)
+X.popLargePuyoGroups()
+#X.findAdjacentGroup(1,11,1)
 X.printBoard()
