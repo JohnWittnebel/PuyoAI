@@ -6,18 +6,46 @@ class Game:
         self.maxY = 12
         self.maxX = 6
         self.points = 0
+        self.currentPuyo = []
+        self.nextPuyo = []
+        self.nextNextPuyo = []
         self.grid = np.zeros((self.maxY,self.maxX))
 
     def printBoard(self):
         for row in self.grid:
             print(row)
         print(self.points)
+        print(self.currentPuyo)
+        print(self.nextPuyo)
+        print(self.nextNextPuyo)
+
+    def initializeRandomPuyos(self):
+        pass
 
     def dropSoloPuyo(self, x, color):
         yIndex = 0
         while yIndex < self.maxY and self.grid[yIndex,x] == 0:
             yIndex += 1
-        self.grid[yIndex-1][x] = color     
+        self.grid[yIndex-1][x] = color
+
+
+    def dropCurrentPuyoHorizontal(self, leftIndex, orientation):
+        if orientation == 0:
+            self.dropHorizontalPuyo(leftIndex, self.currentPuyo[0], self.currentPuyo[1])
+        else:
+            self.dropHorizontalPuyo(leftIndex, self.currentPuyo[1], self.currentPuyo[0])
+        self.currentPuyo = self.nextPuyo
+        self.nextPuyo = self.nextNextPuyo
+        self.nextNextPuyo = self.generateNewPuyo
+    
+    def dropCurrentPuyoVertical(self, index, orientation):
+        if orientation == 0:
+            self.dropVerticalPuyo(index, self.currentPuyo[0], self.currentPuyo[1])
+        else:
+            self.dropVerticalPuyo(index, self.currentPuyo[1], self.currentPuyo[0])
+        self.currentPuyo = self.nextPuyo
+        self.nextPuyo = self.nextNextPuyo
+        self.nextNextPuyo = self.generateNewPuyo
 
     # for dropping a puyo in a horizontal formation
     # x1 is the coordinate of the leftmost puyo, x1 < self.maxX
@@ -119,6 +147,12 @@ class Game:
 
             visited[(yIndex,xIndex)] = 1
         return currGroup
+
+    def generateNewPuyo(self):
+        pass
+
+    def 
+
 
 
 X = Game()
