@@ -11,6 +11,7 @@ class Game:
         self.nextNextPuyo = []
         self.grid = np.zeros((self.maxY,self.maxX))
 
+    # print the board state
     def printBoard(self):
         for row in self.grid:
             print(row)
@@ -27,7 +28,6 @@ class Game:
         while yIndex < self.maxY and self.grid[yIndex,x] == 0:
             yIndex += 1
         self.grid[yIndex-1][x] = color
-
 
     def dropCurrentPuyoHorizontal(self, leftIndex, orientation):
         if orientation == 0:
