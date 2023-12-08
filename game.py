@@ -106,6 +106,8 @@ class Game:
         currGroup = []
         currGroupColor = 0
         totalPopped = 0
+        #TODO: right now this will do a BFS 3 times on a group of 3 adjacent same-colour puyos. This
+        #      isnt TOO inefficient but might be worth changing
         while xIndex < self.maxX and yIndex < self.maxY:
             if self.grid[yIndex][xIndex] != 0:
                 currGroupColor = self.grid[yIndex][xIndex]
@@ -151,7 +153,6 @@ class Game:
     def generateNewPuyo(self):
         pass
 
-    def 
 
 
 
